@@ -28,8 +28,17 @@
         type="date" 
         class="campo__escrita" 
         ngModel
-        #nascimento="ngModel"
+        #nascimento="ngModel" 
+        required maiorIdadeValidator
         />
+        <div *ngIf="(nascimento.invalid && nascimento.touched) || nascimento.dirty">
+          <app-mensagem   *ngIf="nascimento.errors?.['required']" 
+            mensagem=" O Campo de data de nascimento deve ser preenchido">
+          </app-mensagem>
+          <app-mensagem   *ngIf="nascimento.errors?.['maiorIdadeValidator']" 
+            mensagem="Usuario deve ter 18 ou mais.">
+          </app-mensagem>
+        </div>
       </div>
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="telefone">Contato</label>
@@ -74,8 +83,24 @@
 
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="cep">CEP</label>
-      <input name="cep" id="cep" class="campo__escrita" />
-      <div id="erro"></div>
+      <input 
+      name="cep" 
+      id="cep" 
+      class="campo__escrita" 
+      ngModel 
+      required
+      #cep="ngModel" 
+      pattern="^(\d{5})(-?\d{3})$"
+       minlength="8" 
+       maxlength="9"
+       (blur)="consultaCEP($event)"
+       />
+      <div *ngIf="(cep?.invalid&& cep?.touched) || cep?.dirty">
+        <app-mensagem *ngIf="cep?.errors?.['required']" mensagem="Cep eh obrigatorio">
+        </app-mensagem>
+        <app-mensagem *ngIf="cep?.errors?.['pattern']" mensagem="Cep tem de seguir esse exemplo 000000-000">
+        </app-mensagem>
+      </div>
     </div>
 
     <div class="formulario__campo">
